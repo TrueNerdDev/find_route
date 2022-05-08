@@ -21,3 +21,12 @@ class Train(models.Model):
         verbose_name = 'Поезд'
         verbose_name_plural = 'Поезда'
         ordering = ['travel_time']
+
+
+class TrainTest(models.Model):
+    name = models.CharField(max_length=50, unique=True,
+
+                            verbose_name='Номер поезда')
+    from_city = models.ForeignKey(City, on_delete=models.CASCADE,
+                                  related_name='to_city',
+                                  verbose_name='Из какого города')
