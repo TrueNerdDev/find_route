@@ -4,12 +4,12 @@ from django.contrib import messages
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView, ListView
-#from trains.forms import HtmlForm, TrainForm
+from trains.forms import TrainForm
 from trains.models import Train
 
 __all__ = (
     'home',
-    # 'TrainDetailView',
+    'TrainDetailView',
     # 'TrainCreateView',
     # 'TrainUpdateView',
     # 'TrainDeleteView',
@@ -26,11 +26,11 @@ def home(request, pk=None):
     return render(request, 'trains/home.html', context)
 
 
-# class TrainDetailView(DetailView):
-#     queryset = Train.objects.all()
-#     template_name = 'trains/detail.html'
-# 
-# 
+class TrainDetailView(DetailView):
+    queryset = Train.objects.all()
+    template_name = 'trains/detail.html'
+
+
 # class TrainCreateView(SuccessMessageMixin, CreateView):
 #     model = Train
 #     form_class = TrainForm
