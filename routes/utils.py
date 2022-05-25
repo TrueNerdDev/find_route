@@ -29,14 +29,14 @@ def get_graph(qs):
 
 def get_routes(request, form) -> dict:
     context = {'form': form}
-    qs = Train.objects.all()
+    qs = Train.objects.all().select_related('from_city', 'to_city')
     graph = get_graph(qs)
     data = form.cleaned_data
     from_city = data['from_city']
     to_city = data['to_city']
     cities = data['cities']
     travelling_time = data['travelling_time']
-    all_routes = len(dfs_paths(graph, from_city.id, to_city.id))
+    all_routes = list(dfs_paths(graph, from_city.id, to_city.id))
     if not len(list(all_routes)):
         raise ValueError('Маршрута, удовлетворяющего условиям не существует')
     if cities:
