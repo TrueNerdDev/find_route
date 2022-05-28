@@ -29,7 +29,6 @@ def get_graph(qs):
 
 def get_routes(request, form) -> dict:
     context = {'form': form}
-    #qs = Train.objects.all()
     qs = Train.objects.all().select_related('from_city', 'to_city')
     graph = get_graph(qs)
     data = form.cleaned_data
@@ -59,7 +58,7 @@ def get_routes(request, form) -> dict:
         tmp = {}
         tmp['trains'] = []
         total_time = 0
-        for i in range(len(route) -  1):
+        for i in range(len(route) - 1):
             qs = all_trains[(route[i], route[i+1])]
             q = qs[0]
             total_time += q.travel_time

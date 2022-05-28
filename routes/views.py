@@ -1,8 +1,10 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
+from django.views.generic import ListView, DetailView
 
 from cities.models import City
 from routes.forms import RouteForm, RouteModelForm
+from routes.models import Route
 from routes.utils import get_routes
 from trains.models import Train
 
@@ -37,7 +39,7 @@ def add_route(request):
             total_time = int(data['total_time'])
             from_city_id = int(data['from_city'])
             to_city_id = int(data['to_city'])
-            trains = data['trains'].split(',')
+            trains = data['trains']
             trains_lst = [int(t) for t in trains if t.isdigit()]
             qs = Train.objects.filter(id__in=trains_lst).select_related(
                 'from_city', 'to_city')
@@ -49,12 +51,11 @@ def add_route(request):
                     'to_city': cities[to_city_id],
                     'travel_times': total_time,
                     'trains': qs
-                        }
+                }
             )
             context['form'] = form
         return render(request, 'routes/create.html', context)
     else:
-        form = RouteForm()
         messages.error(request, "Невозможно сохранить несуществующий маршрут")
         return redirect('/')
 
@@ -68,6 +69,16 @@ def save_route(request):
             return redirect('/')
         return render(request, 'routes/create.html', {'form': form})
     else:
-        form = RouteForm()
         messages.error(request, "Невозможно сохранить несуществующий маршрут")
         return redirect('/')
+
+
+class RouteListView(ListView):
+    paginate_by = 10
+    model = Route
+    template_name = 'routes/list.html'
+
+
+class RouteDetailView(DetailView):
+    queryset = Route.objects.all()
+    template_name = 'routes/detail.html'

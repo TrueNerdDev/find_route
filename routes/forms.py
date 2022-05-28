@@ -35,15 +35,19 @@ class RouteModelForm(forms.ModelForm):
             'class': 'form-control',
             'placeholder': 'Введите название маршрута',
     }))
-    from_city = forms.ModelChoiceField(queryset=City.objects.all(), widget=forms.HiddenInput())
-    to_city = forms.ModelChoiceField(queryset=City.objects.all(), widget=forms.HiddenInput())
+    from_city = forms.ModelChoiceField(
+        queryset=City.objects.all(), widget=forms.HiddenInput()
+    )
+    to_city = forms.ModelChoiceField(
+        queryset=City.objects.all(), widget=forms.HiddenInput()
+    )
     trains = forms.ModelMultipleChoiceField(
-        label='', queryset=Train.objects.all(),
+        queryset=Train.objects.all(),
         required=False, widget=forms.SelectMultiple(
             attrs={'class': 'form-control d-none'}
         )
     )
-    travel_times = forms.IntegerField(label='Время в пути', widget=forms.HiddenInput())
+    travel_times = forms.IntegerField(widget=forms.HiddenInput())
 
     class Meta:
         model = Route
