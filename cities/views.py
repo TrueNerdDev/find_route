@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator
 from django.contrib import messages
@@ -39,7 +40,7 @@ def home(request, pk=None):
     return render(request, 'cities/home.html', context)
 
 
-class CityDetailView(DetailView):
+class CityDetailView(LoginRequiredMixin, DetailView):
     queryset = City.objects.all()
     template_name = 'cities/detail.html'
 
